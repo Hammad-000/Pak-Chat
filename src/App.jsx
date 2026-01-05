@@ -65,22 +65,21 @@ function App() {
 
     getFetch();
 
-    console.log(supabase);
+   
     return () => {
       subscription.unsubscribe();
     };
   }, []);
 
-  // Helper to extract the Gmail name (before the @ symbol)
   const getNameFromEmail = (email) => {
-    return email.split('@')[0]; // Get the part before @ symbol
+    return email.split('@')[0]; 
   };
 
   return (
-    <div className="w-screen h-screen bg-gray-200 flex items-center justify-center">
-      <div className="w-full max-w-md h-full md:h-[90%] bg-white shadow-lg flex flex-col">
+    <div className="w-screen h-screen bg-gray-200  flex items-center justify-center">
+      <div className="w-full max-w-md h-full rounded md:h-[90%] bg-white shadow-lg flex flex-col">
         {/* Header */}
-        <div className="flex justify-between items-center p-4 bg-gray-500 text-white text-sm font-bold">
+        <div className="flex justify-between rounded items-center p-4 bg-gray-600 text-white text-sm font-bold">
           {user ? (
             <>
               <div className="flex items-center space-x-2">
@@ -118,6 +117,13 @@ function App() {
           {messages.map((msg) => (
             <div key={msg.id} className="flex justify-start">
               <div className="bg-white px-4 py-2 rounded-lg shadow text-sm max-w-[75%]">
+                
+                 
+                  <img
+                    src={user.user_metadata.avatar_url}
+                    alt="User Avatar"
+                    className="w-6 h-6 rounded-full"
+                  />
                 <p>{msg.title}</p>
                 <div className="flex justify-between gap-2 flex-col">
                   <small className="text-gray-400">{msg.user_email.split('@')[0]}</small>
@@ -140,7 +146,7 @@ function App() {
             />
             <button
               onClick={insertData}
-              className="rounded-2xl bg-orange-400 p-2 text-white"
+              className="rounded-full bg-orange-400 p-2 text-white"
             >
               Send
             </button>
