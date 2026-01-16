@@ -1,13 +1,17 @@
 import './index.css'
 import supabase from './config/supabase';
 import { useState, useEffect } from 'react';
+import { IoLogOutOutline } from "react-icons/io5";
+import { IoSendOutline } from "react-icons/io5";
+
+
 
 function App() {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [user, setUser] = useState(null);
 
-  // 🔐 Google Login
+  //  Google Login
   const loginWithGoogle = async () => {
     await supabase.auth.signInWithOAuth({
       provider: "google",
@@ -17,12 +21,12 @@ function App() {
     });
   };
 
-  // 🚪 Logout
+  //  Logout
   const logout = async () => {
     await supabase.auth.signOut();
   };
 
-  // 📩 Fetch messages
+  //  Fetch messages
   const getFetch = async () => {
     const { data, error } = await supabase
       .from("inbox")
@@ -32,7 +36,7 @@ function App() {
     if (!error) setMessages(data);
   };
 
-  // ➕ Insert message (logged-in user only)
+  //  Insert message (logged-in user only)
   const insertData = async () => {
     if (!message.trim() || !user) return;
 
@@ -40,8 +44,8 @@ function App() {
       title: message,
       user_id: user.id,
       user_email: user.email,
-      created_at: new Date().toISOString(), 
-      avatar_url: user.user_metadata.avatar_url ,
+      created_at: new Date().toISOString(),
+      avatar_url: user.user_metadata.avatar_url,
     });
 
     if (!error) {
@@ -66,14 +70,14 @@ function App() {
 
     getFetch();
 
-   
+
     return () => {
       subscription.unsubscribe();
     };
   }, []);
 
   const getNameFromEmail = (email) => {
-    return email.split('@')[0]; 
+    return email.split('@')[0];
   };
 
   return (
@@ -85,22 +89,15 @@ function App() {
             <>
               <div className="flex items-center space-x-2">
                 {/* Avatar */}
-                {user.user_metadata?.avatar_url ? (
-                  <img
-                    src={user.user_metadata.avatar_url}
-                    alt="User Avatar"
-                    className="w-8 h-8 rounded-full"
-                  />
-                ) : (
-                  <div className="w-8 h-8 rounded-full bg-gray-300"></div> 
-                )}
+             
                 <div>
-                  <p>{getNameFromEmail(user.email)}</p> 
-                  <small className="block text-gray-400">{user.email}</small> 
+                  <p>{getNameFromEmail(user.email)}</p>
+                  <small className="block text-gray-400">{user.email}</small>
                 </div>
               </div>
-              <button onClick={logout} className="rounded-2xl bg-orange-400 p-2">
-                Logout
+              <button onClick={logout} className="rounded-2xl cursor-pointer bg-orange-400 p-2">
+              <IoLogOutOutline />
+
               </button>
             </>
           ) : (
@@ -118,14 +115,19 @@ function App() {
           {messages.map((msg) => (
             <div key={msg.id} className="flex justify-start">
               <div className="bg-white px-4 py-2 rounded-lg shadow text-sm max-w-[75%]">
-                
-              <div>
-                  <img
-                    src={user.user_metadata.avatar_url}
-                    alt="User Avatar"
-                    className="w-6 h-6 rounded-full"
+
+                <div>
+                  {msg.avatar_url ? (
+                    <img
+                      src={msg.avatar_url}
+                      alt="User Avatar"
+                      className="w-6 h-6 rounded-full"
                     />
-                    </div>   
+                  ) : (
+                    <div className="w-6 h-6 rounded-full bg-gray-300"></div>
+                  )}
+
+                </div>
                 <p>{msg.title}</p>
                 <div className="flex justify-between gap-2 flex-col">
                   <small className="text-gray-400">{msg.user_email.split('@')[0]}</small>
@@ -148,9 +150,10 @@ function App() {
             />
             <button
               onClick={insertData}
-              className="rounded-full bg-orange-400 p-2 text-white"
+              className="rounded-full m-1 bg-orange-400 p-2 text-white"
             >
-              Send
+              <IoSendOutline />
+
             </button>
           </div>
         )}
