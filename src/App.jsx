@@ -95,7 +95,7 @@ function App() {
                   <small className="block text-gray-400">{user.email}</small>
                 </div>
               </div>
-              <button onClick={logout} className="rounded-2xl cursor-pointer bg-orange-400 p-2">
+              <button onClick={logout} className="rounded-2xl cursor-pointer bg-blue-400 p-2">
               <IoLogOutOutline />
 
               </button>
@@ -103,7 +103,7 @@ function App() {
           ) : (
             <button
               onClick={loginWithGoogle}
-              className="bg-white text-orange-600 px-3 py-1 rounded"
+              className="bg-white text-blue-600 px-3 py-1 rounded"
             >
               Login with Google
             </button>
